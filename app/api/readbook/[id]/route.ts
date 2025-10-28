@@ -31,8 +31,13 @@ export async function GET(_: Request, {params}: {params: Promise<{id?: string}>}
     // .replace(/<a[^>]+href="https:\/\/www\.gutenberg\.org[^"]+"[^>]*>.*?<\/a>/g, '');
 
     return NextResponse.json({html});
-  } catch (e: any) {
-    console.error('Error fetching book:', e);
-    return NextResponse.json({error: e?.message ?? 'Unknown error'}, {status: 500});
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      console.error('Error fetching book:', e);
+      return NextResponse.json({error: e?.message ?? 'Unknown error'}, {status: 500});
+    } else {
+      console.error('Unknown error fetching book:', e);
+      return NextResponse.json({error: 'Unknown error'}, {status: 500});
+    }
   }
 }
