@@ -37,7 +37,7 @@ export async function POST() {
           description: book.subjects?.slice(0, 5).join(', ') || null,
           languages: book.languages || [],
           download_links: {
-            pdf: book.formats['application/pdf'] || book.formats['text/html'] || null,
+            html: book.formats['text/html'] || null,
             epub: book.formats['application/epub+zip'] || null,
           },
           source: 'gutenberg',
