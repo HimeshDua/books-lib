@@ -54,10 +54,14 @@ function PaginationControls({page, totalPages}: {page: number; totalPages: numbe
   );
 }
 
-export default async function Home({searchParams}: {searchParams: {page?: string; q?: string}}) {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{page?: string; q?: string}>;
+}) {
   const supabase = await createClient();
-  const page = Math.max(1, Number(searchParams.page) || 1);
-  const query = (searchParams.q || '').trim();
+  const page = Math.max(1, Number((await searchParams).page) || 1);
+  const query = ((await searchParams).q || '').trim();
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
 
