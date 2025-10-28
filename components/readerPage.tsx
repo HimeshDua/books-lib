@@ -1,4 +1,5 @@
 'use client';
+
 import {useEffect, useState} from 'react';
 import {Loader2} from 'lucide-react';
 
@@ -16,8 +17,12 @@ export default function BookReader({slug}: {slug: string}) {
         if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
         if (data.html) setHtml(data.html);
         else throw new Error('No HTML content found');
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       }
     };
 
@@ -35,7 +40,7 @@ export default function BookReader({slug}: {slug: string}) {
 
   if (!html) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-center text-muted-foreground">
+      <div className="min-h-[96.4vh] flex flex-col items-center justify-center text-center text-muted-foreground">
         <Loader2 className="w-6 h-6 animate-spin mb-3 text-primary" />
         <p>Loading the book content...</p>
       </div>
@@ -43,7 +48,7 @@ export default function BookReader({slug}: {slug: string}) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="min-h-[96.4vh] flex flex-col bg-background text-foreground">
       {/* Book Content */}
       <article
         className="prose dark:prose-invert max-w-3xl mx-auto p-6 md:p-8 leading-relaxed tracking-wide"

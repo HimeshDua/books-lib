@@ -20,7 +20,7 @@ export async function GET(_: Request, {params}: {params: Promise<{id?: string}>}
       return NextResponse.json({error: `Failed to fetch: ${res.status}`}, {status: res.status});
     }
 
-    let html = await res.text();
+    const html = await res.text();
 
     // html = html.replace(/<script[\s\S]*?<\/script>/gi, '');
     // .replace(/<style[\s\S]*?<\/style>/gi, '')
