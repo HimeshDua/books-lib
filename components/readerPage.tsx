@@ -18,6 +18,7 @@ export default function BookReader({slug}: {slug: string}) {
         if (data.html) setHtml(data.html);
         else throw new Error('No HTML content found');
       } catch (err: unknown) {
+        console.error(err);
         if (err instanceof Error) {
           setError(err.message);
         } else {

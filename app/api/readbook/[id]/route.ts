@@ -2,7 +2,7 @@ import {NextResponse} from 'next/server';
 
 export async function GET(_: Request, {params}: {params: Promise<{id?: string}>}) {
   const id = (await params).id;
-  // console.log('Fetching book with id:', id);
+  console.log('Fetching book with id:', id);
   if (!id) {
     return NextResponse.json({error: 'Missing id parameter'}, {status: 400});
   }

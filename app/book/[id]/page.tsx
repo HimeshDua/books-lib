@@ -1,15 +1,15 @@
-import {createClient} from '@/lib/supabase/server';
 import {Button} from '@/components/ui/button';
 import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
 import Link from 'next/link';
 import {BookOpen} from 'lucide-react';
+import {publicSupabase} from '@/lib/supabase/public';
+import type {Book} from '@/types';
 
 export default async function DetailedBook({params}: {params: Promise<{id: string}>}) {
   const {id} = await params;
-  const supabase = await createClient();
 
-  const {data, error} = await supabase.from('books').select('*').eq('id', id).single();
+  const {data, error} = await publicSupabase.from('books').select('*').eq('id', id).single();
 
   if (error || !data) {
     return (
@@ -27,8 +27,7 @@ export default async function DetailedBook({params}: {params: Promise<{id: strin
     );
   }
 
-  const book = data;
-
+  const book: Book = data;
   return (
     <main className="min-h-screen bg-background text-foreground">
       {/* ✅ Main Book Content */}
