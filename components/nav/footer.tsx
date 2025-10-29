@@ -8,8 +8,12 @@ function Footer() {
         <div className="text-sm text-balance text-slate-600 dark:text-slate-400">
           <p>
             Built with ❤️ by{' '}
-            <span className="font-semibold text-slate-900 dark:text-white">Himesh Dua</span>. Idea
-            credit goes to{' '}
+            <span className="font-semibold text-slate-900 dark:text-white">
+              <a href="https://himeshdua.vercel.app" target="_blank">
+                Himesh Dua
+              </a>
+            </span>
+            . Idea credit goes to{' '}
             <span className="font-semibold text-slate-900 dark:text-white">M. Afan</span>. Inspired
             by the idea of making reading truly free for everyone.
           </p>

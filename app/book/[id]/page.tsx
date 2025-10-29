@@ -5,9 +5,19 @@ import Link from 'next/link';
 import {BookOpen} from 'lucide-react';
 import {publicSupabase} from '@/lib/supabase/public';
 import type {Book} from '@/types';
+import {createClient} from '@/lib/supabase/server';
+import ToggleFavoriteBook, {
+  ToggleFavoriteBookSkeleton,
+} from '@/components/favoritism/toggleFavoriteBook';
+import {Suspense} from 'react';
 
 export default async function DetailedBook({params}: {params: Promise<{id: string}>}) {
   const {id} = await params;
+  const supabase = await createClient();
+  const {data: userData, error: userError} = await supabase.auth.getClaims();
+  const user = userData?.claims;
+
+  if (userError) console.error(userError);
 
   const {data, error} = await publicSupabase.from('books').select('*').eq('id', id).single();
 
@@ -94,6 +104,10 @@ export default async function DetailedBook({params}: {params: Promise<{id: strin
                   </Link>
                 </Button>
               )}
+
+              <Suspense fallback={<ToggleFavoriteBookSkeleton />}>
+                <ToggleFavoriteBook id={user?.sub || null} bookId={id} bookTitle={book.title} />
+              </Suspense>
             </div>
 
             <div className="mt-6 text-sm text-muted-foreground space-y-1">
