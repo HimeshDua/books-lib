@@ -18,22 +18,27 @@ function SelectBookCategory({className}: {className?: string}) {
   const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    async function fetchCategories() {
-      const supabase = createClient();
-      const {data, error} = await supabase.from('category').select('categories');
+    const storedCategories = localStorage.getItem('categories');
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+    if (storedCategories) {
+      setCategories(JSON.parse(storedCategories));
+    } else {
+      (async () => {
+        const supabase = createClient();
+        const {data, error} = await supabase.from('category').select('categories');
 
-      if (data && data.length > 0) {
-        const allCategories = data[0].categories as string[];
-        setCategories(['All', ...allCategories]);
-      }
+        if (error) {
+          console.error('Error fetching categories:', error);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          const allCategories = ['All', ...(data[0].categories as string[])];
+          setCategories(allCategories);
+          localStorage.setItem('categories', JSON.stringify(allCategories));
+        }
+      })();
     }
-
-    fetchCategories();
   }, []);
 
   const handleSelect = (value: string) => {
@@ -48,10 +53,10 @@ function SelectBookCategory({className}: {className?: string}) {
   return (
     <div className={className}>
       <Select onValueChange={handleSelect}>
-        <SelectTrigger className="w-[280px] backdrop-blur-md bg-white/10 border border-white/20">
+        <SelectTrigger className="w-full sm:w-[280px] backdrop-blur-md bg-white/10 border border-white/20">
           <SelectValue
             placeholder={
-              <span className="flex gap-2 items-center">
+              <span className="flex shadow-sm gap-2 items-center">
                 <Filter className="w-4 h-4" />
                 <p>Filter by category</p>
               </span>

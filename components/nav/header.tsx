@@ -29,6 +29,7 @@ function Header() {
 
         <div className="flex items-center gap-2">
           <ThemeSwitcher />
+
           <Button asChild size="sm" variant="ghost" className="sm:hidden">
             <Link href="/">
               <Home className="w-5 h-5" />

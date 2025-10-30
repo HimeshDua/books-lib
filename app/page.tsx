@@ -10,18 +10,6 @@ import Link from 'next/link';
 import React, {Suspense} from 'react';
 
 const PAGE_SIZE = 12;
-
-const categories = [
-  'All',
-  'Fiction',
-  'Science',
-  'History',
-  'Philosophy',
-  'Poetry',
-  'Children',
-  'Biography',
-];
-
 function PaginationControls({page, totalPages}: {page: number; totalPages: number}) {
   const prevDisabled = page <= 1;
   const nextDisabled = page >= totalPages;
