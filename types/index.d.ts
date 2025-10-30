@@ -12,4 +12,5 @@ export type Book = {
   source: string | null;
   copyright: boolean;
   cover_url: string | null;
+  bookshelves: string[];
 };
