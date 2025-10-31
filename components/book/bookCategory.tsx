@@ -1,4 +1,5 @@
 'use client';
+
 import {createClient} from '@/lib/supabase/client';
 import {
   Select,
@@ -53,7 +54,7 @@ function SelectBookCategory({className}: {className?: string}) {
   return (
     <div className={className}>
       <Select onValueChange={handleSelect}>
-        <SelectTrigger className="w-full sm:w-[280px] backdrop-blur-md bg-white/10 border border-white/20">
+        <SelectTrigger className="w-full sm:w-[280px] backdrop-blur-md bg-white/10 ">
           <SelectValue
             placeholder={
               <span className="flex shadow-sm gap-2 items-center">
@@ -64,7 +65,7 @@ function SelectBookCategory({className}: {className?: string}) {
           />
         </SelectTrigger>
 
-        <SelectContent className="scroll-smooth max-h-[55vh] backdrop-blur-xl bg-background/80 border border-white/10 rounded-xl shadow-lg">
+        <SelectContent className="scroll-smooth max-h-[55vh] backdrop-blur-xl bg-background/60 rounded-xl shadow-lg">
           <SelectGroup>
             <SelectLabel className="mb-2 text-xs uppercase text-muted-foreground">
               Select a category
@@ -74,7 +75,7 @@ function SelectBookCategory({className}: {className?: string}) {
               <SelectItem
                 value={category}
                 key={category}
-                className="hover:bg-white/10 transition-colors cursor-pointer"
+                className=" transition-colors cursor-pointer"
               >
                 {category}
               </SelectItem>

@@ -64,7 +64,12 @@ export default async function Home({
   const category = (await searchParams).category || 'All';
   if (category !== 'All') builder.contains('bookshelves', [category]);
 
-  if (query) builder.ilike('title', `%${query}%`).or(`author.ilike.%${query}%`);
+  // Improved search logic for better readability, performance, and maintainability
+  const trimmedQuery = query.trim();
+  if (trimmedQuery) {
+    // Use a single 'or' clause with multiple conditions for efficiency
+    builder.or(`title.ilike.%${trimmedQuery}%,author.ilike.%${trimmedQuery}%`);
+  }
 
   const {data: dataBooks, error, count} = await builder;
   const books: Book[] = (dataBooks ?? []) as Book[];
@@ -93,18 +98,7 @@ export default async function Home({
             </p>
           </div>
 
-          <div
-            className="
-    w-full order-3 sm:order-none
-    sm:w-auto
-    sticky -top-10 z-[100]
-    bg-background/80 backdrop-blur-md
-    border-b border-border
-    sm:static sm:bg-transparent sm:z-0 sm:border-none sm:backdrop-blur-none
-  "
-          >
-            <SelectBookCategory className="block" />
-          </div>
+          <SelectBookCategory className="block" />
 
           <form
             action="/"
@@ -146,11 +140,11 @@ export default async function Home({
                   <li
                     key={book.id}
                     className="
-        group/card relative transition-all duration-300
-        hover:scale-[1.05] hover:z-10
-        group-hover/card-grid:blur-[2px] group-hover/card-grid:opacity-70
-        hover:!opacity-100 hover:!blur-none
-      "
+                    group/card relative transition-all duration-300
+                    hover:scale-[1.05] hover:z-10
+                    group-hover/card-grid:blur-[2px] group-hover/card-grid:opacity-70
+                    hover:!opacity-100 hover:!blur-none
+                  "
                   >
                     <Link
                       target="_blank"
