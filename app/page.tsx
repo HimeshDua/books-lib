@@ -14,15 +14,21 @@ function PaginationControls({page, totalPages}: {page: number; totalPages: numbe
   const nextDisabled = page >= totalPages;
 
   return (
-    <nav className="flex justify-center mt-10 gap-3">
-      <Button variant="outline" size="sm" disabled={prevDisabled}>
-        ← Prev
+    <nav className="flex items-center justify-center gap-3 mt-10  w-full" aria-label="Pagination">
+      <Button className="rounded-2xl" variant="outline" size="sm" disabled={nextDisabled}>
+        <Link href={`/?page=${Math.max(1, page - 1)}`} aria-disabled={prevDisabled}>
+          ← Prev
+        </Link>
       </Button>
-      <div className="px-4 py-2 text-sm font-semibold rounded-full bg-muted">
-        Page {page}/{totalPages}
+
+      <div className="px-3 py-2 rounded-full bg-muted text-sm font-semibold min-w-[80px] text-center">
+        Page {page} / {totalPages || 1}
       </div>
-      <Button variant="outline" size="sm" disabled={nextDisabled}>
-        Next →
+
+      <Button className="rounded-2xl" variant="outline" size="sm" disabled={nextDisabled}>
+        <Link href={`/?page=${Math.min(totalPages || 1, page + 1)}`} aria-disabled={nextDisabled}>
+          Next →
+        </Link>
       </Button>
     </nav>
   );
@@ -49,10 +55,8 @@ export default async function Home({
   const category = (await searchParams).category || 'All';
   if (category !== 'All') builder.contains('bookshelves', [category]);
 
-  // Improved search logic for better readability, performance, and maintainability
   const trimmedQuery = query.trim();
   if (trimmedQuery) {
-    // Use a single 'or' clause with multiple conditions for efficiency
     builder.or(`title.ilike.%${trimmedQuery}%,author.ilike.%${trimmedQuery}%`);
   }
 
