@@ -3,23 +3,22 @@ import {Separator} from '@/components/ui/separator';
 import Image from 'next/image';
 import Link from 'next/link';
 import {BookOpen} from 'lucide-react';
-import {publicSupabase} from '@/lib/supabase/public';
 import type {Book} from '@/types';
 import {createClient} from '@/lib/supabase/server';
 import ToggleFavoriteBook, {
   ToggleFavoriteBookSkeleton,
 } from '@/components/favoritism/toggleFavoriteBook';
 import {Suspense} from 'react';
+import {getUserById} from '@/lib/getUserId';
+import {getBookfromId} from '@/lib/getBookfromId';
+import AuthDialog from '@/components/auth-dialog';
 
 export default async function DetailedBook({params}: {params: Promise<{id: string}>}) {
   const {id} = await params;
   const supabase = await createClient();
-  const {data: userData, error: userError} = await supabase.auth.getClaims();
-  const user = userData?.claims;
 
-  if (userError) console.error(userError);
-
-  const {data, error} = await publicSupabase.from('books').select('*').eq('id', id).single();
+  const {data, error} = await getBookfromId(supabase, id);
+  const {userId} = await getUserById(supabase);
 
   if (error || !data) {
     return (
@@ -40,10 +39,8 @@ export default async function DetailedBook({params}: {params: Promise<{id: strin
   const book: Book = data;
   return (
     <main className="min-h-screen bg-background text-foreground">
-      {/* ✅ Main Book Content */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Left: Cover */}
           <div className="w-full">
             <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden shadow-md bg-muted">
               {book.cover_url ? (
@@ -63,7 +60,6 @@ export default async function DetailedBook({params}: {params: Promise<{id: strin
             </div>
           </div>
 
-          {/* Right: Book details */}
           <div className="md:col-span-2 flex flex-col justify-center">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
               {book.title}
@@ -97,16 +93,22 @@ export default async function DetailedBook({params}: {params: Promise<{id: strin
                   </Link>
                 </Button>
               )}
-              {book.download_links?.epub && (
-                <Button asChild variant="outline">
-                  <Link href={book.download_links.epub} target="_blank">
-                    📚 Download ePub
-                  </Link>
-                </Button>
-              )}
+              {book.download_links?.epub &&
+                (userId ? (
+                  <Button asChild variant="outline">
+                    <Link href={book.download_links.epub} target="_blank">
+                      📚 Download ePub
+                    </Link>
+                  </Button>
+                ) : (
+                  <AuthDialog
+                    description="download books"
+                    dialogTrigger={<Button variant="outline">📚 Download ePub</Button>}
+                  />
+                ))}
 
               <Suspense fallback={<ToggleFavoriteBookSkeleton />}>
-                <ToggleFavoriteBook id={user?.sub || null} bookId={id} bookTitle={book.title} />
+                <ToggleFavoriteBook id={userId} bookId={id} bookTitle={book.title} />
               </Suspense>
             </div>
 

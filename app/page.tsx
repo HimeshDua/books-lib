@@ -1,7 +1,6 @@
 import SelectBookCategory from '@/components/book/bookCategory';
 import BookFallback from '@/components/book/bookFallback';
 import {Button} from '@/components/ui/button';
-import {Input} from '@/components/ui/input';
 import {Separator} from '@/components/ui/separator';
 import {createClient} from '@/lib/supabase/server';
 import type {Book} from '@/types';
@@ -15,30 +14,16 @@ function PaginationControls({page, totalPages}: {page: number; totalPages: numbe
   const nextDisabled = page >= totalPages;
 
   return (
-    <nav className="flex items-center justify-center gap-2 w-full" aria-label="Pagination">
-      <Link
-        href={`/?page=${Math.max(1, page - 1)}`}
-        className={`inline-flex items-center px-3 py-2 rounded-md text-sm font-medium transition ${
-          prevDisabled ? 'opacity-40 pointer-events-none' : 'hover:bg-muted'
-        }`}
-        aria-disabled={prevDisabled}
-      >
+    <nav className="flex justify-center mt-10 gap-3">
+      <Button variant="outline" size="sm" disabled={prevDisabled}>
         ← Prev
-      </Link>
-
-      <div className="px-3 py-2 rounded-full bg-muted text-sm font-semibold min-w-[80px] text-center">
-        Page {page} / {totalPages || 1}
+      </Button>
+      <div className="px-4 py-2 text-sm font-semibold rounded-full bg-muted">
+        Page {page}/{totalPages}
       </div>
-
-      <Link
-        href={`/?page=${Math.min(totalPages || 1, page + 1)}`}
-        className={`inline-flex items-center px-3 py-2 rounded-md text-sm font-medium transition ${
-          nextDisabled ? 'opacity-40 pointer-events-none' : 'hover:bg-muted'
-        }`}
-        aria-disabled={nextDisabled}
-      >
+      <Button variant="outline" size="sm" disabled={nextDisabled}>
         Next →
-      </Link>
+      </Button>
     </nav>
   );
 }
@@ -99,29 +84,6 @@ export default async function Home({
           </div>
 
           <SelectBookCategory className="block" />
-
-          <form
-            action="/"
-            method="get"
-            className="
-      flex w-full sm:w-auto items-center justify-center
-      gap-2 mt-2 sm:mt-0
-    "
-          >
-            <Input
-              name="q"
-              defaultValue={query}
-              placeholder="Search title or author"
-              aria-label="Search books by title or author"
-              className="
-        flex-1 sm:flex-none
-        w-full sm:w-[200px] md:w-[250px] lg:w-[300px]
-      "
-            />
-            <Button type="submit" className="whitespace-nowrap">
-              Search
-            </Button>
-          </form>
         </header>
 
         <Separator />

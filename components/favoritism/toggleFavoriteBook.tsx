@@ -3,12 +3,10 @@
 import React, {useEffect, useState} from 'react';
 import {Button} from '../ui/button';
 import {HeartIcon, HeartOffIcon} from 'lucide-react';
-import {Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger} from '../ui/dialog';
-import {Separator} from '../ui/separator';
-import Link from 'next/link';
 import {createClient} from '@/lib/supabase/client';
 import {toast} from 'sonner';
 import {ConfettiButton} from '../ui/confetti';
+import AuthDialog from '../auth-dialog';
 
 type Props = {
   id: string | null;
@@ -114,26 +112,14 @@ function ToggleFavoriteBook({id, bookId, bookTitle}: Props) {
           <ToggleFavoriteBookSkeleton />
         )
       ) : (
-        <Dialog>
-          <DialogTrigger>
+        <AuthDialog
+          description="save favorites"
+          dialogTrigger={
             <Button variant="destructive">
               Add to favorites <HeartIcon />
             </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogTitle className="mt-2.5">Unauthenticated to perform this action</DialogTitle>
-            <DialogDescription>Log In to save your changes</DialogDescription>
-            <Separator />
-            <div className="flex md:flex-row flex-col relative  gap-4 justify-end">
-              <Link className="w-full" href="/auth/login">
-                <Button className="w-full">Log In</Button>
-              </Link>
-              <Link href="/auth/sign-up">
-                <Button className="w-full">Sign Up</Button>
-              </Link>
-            </div>
-          </DialogContent>
-        </Dialog>
+          }
+        />
       )}
     </>
   );

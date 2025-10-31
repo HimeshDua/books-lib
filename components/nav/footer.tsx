@@ -1,45 +1,40 @@
 import React from 'react';
+import Link from 'next/link';
 
 function Footer() {
   return (
-    <footer className="mt-16 border-t border-slate-200 dark:border-slate-800 py-10 text-center">
-      <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-        {/* Left: Project credit */}
-        <div className="text-sm text-balance text-slate-600 dark:text-slate-400">
-          <p>
-            Built with ❤️ by{' '}
-            <span className="font-semibold text-slate-900 dark:text-white">
-              <a href="https://himeshdua.vercel.app" target="_blank">
-                Himesh Dua
-              </a>
-            </span>
-            . Idea credit goes to{' '}
-            <span className="font-semibold text-slate-900 dark:text-white">M. Afan</span>. Inspired
-            by the idea of making reading truly free for everyone.
-          </p>
-        </div>
+    <footer className="mt-24 border-t border-border/40 py-10 text-center">
+      <div className="max-w-5xl mx-auto px-6 space-y-6 sm:space-y-4">
+        {/* Project credit */}
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+          Built with <span className="text-rose-500">❤️</span> by{' '}
+          <Link
+            href="https://himeshdua.vercel.app"
+            target="_blank"
+            className="font-medium text-foreground hover:text-primary transition-colors"
+          >
+            Himesh Dua
+          </Link>
+          . Idea by <span className="font-medium text-foreground">M. Afan</span> — making reading
+          truly free for everyone.
+        </p>
 
-        {/* Center: API credit */}
-        <div className="text-xs text-balance sm:text-sm text-slate-500 dark:text-slate-400">
-          <p>
-            Powered by{' '}
-            <a
-              href="https://gutenindex.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-blue-600 dark:text-blue-400 hover:underline"
-            >
-              GutenIndex API
-            </a>{' '}
-            — fetching over{' '}
-            <span className="font-bold text-slate-900 dark:text-slate-100">30,000+</span>{' '}
-            public-domain books from Project Gutenberg.
-          </p>
-        </div>
-      </div>
+        {/* API credit */}
+        <p className="text-xs sm:text-sm text-muted-foreground">
+          Powered by{' '}
+          <a
+            href="https://gutendex.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-primary hover:underline underline-offset-4"
+          >
+            Gutendex API
+          </a>{' '}
+          — delivering <span className="font-semibold text-foreground">30,000+</span> public-domain
+          books.
+        </p>
 
-      <div className="mt-6 text-xs text-slate-400">
-        © {new Date().getFullYear()} Books Library. All rights reserved.
+        <div className="h-px bg-gradient-to-r from-transparent via-border/60 to-transparent mt-6" />
       </div>
     </footer>
   );
