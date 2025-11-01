@@ -16,7 +16,7 @@ import {useIsMobile} from '@/hooks/useIsMobile';
 import type {User} from '@supabase/supabase-js';
 
 export function UserMenu() {
-  const [user, setUser] = useState<User | Record<string, any>>();
+  const [user, setUser] = useState<User | null>();
   const {setTheme, theme} = useTheme();
   const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
@@ -26,8 +26,12 @@ export function UserMenu() {
     const supabase = createClient();
 
     async function getUserClaims() {
-      const {data} = await supabase.auth.getClaims();
-      if (data?.claims) setUser(data.claims);
+      const {data, error} = await supabase.auth.getUser();
+      if (error) {
+        console.error('Error fetching user:', error);
+        return;
+      }
+      if (data?.user) setUser(data.user);
     }
 
     async function fetchFavorites() {
