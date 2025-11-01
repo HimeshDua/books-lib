@@ -13,9 +13,10 @@ import {getUserById} from '@/lib/getUserId';
 import Link from 'next/link';
 import {Tooltip, TooltipContent, TooltipTrigger} from './ui/tooltip';
 import {useIsMobile} from '@/hooks/useIsMobile';
+import type {User} from '@supabase/supabase-js';
 
 export function UserMenu() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | Record<string, any>>();
   const {setTheme, theme} = useTheme();
   const [count, setCount] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);

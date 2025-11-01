@@ -14,3 +14,22 @@ export type Book = {
   cover_url: string | null;
   bookshelves: string[];
 };
+
+export type localSupabase = {
+  auth: {
+    getClaims: () => Promise<{
+      data: {claims: Record<string, any> | null};
+      error: Error | null;
+    }>;
+  };
+  from: (table: string) => {
+    select: (columns: string) => {
+      eq: (
+        column: string,
+        value: string
+      ) => {
+        single: () => Promise<{data: Book | null; error: Error | null}>;
+      };
+    };
+  };
+};
