@@ -20,8 +20,10 @@ function Header() {
           <div className="flex order-1 md:order-2 items-center gap-2">
             <form className="flex items-center gap-2">
               <Input
-                placeholder="Search..."
-                className="rounded-full  backdrop-blur-md   w-[180px] sm:w-[260px]"
+                name="q"
+                placeholder="Search title or author"
+                aria-label="Search books by title or author"
+                className="rounded-full  backdrop-blur-md w-[180px] sm:w-[260px]"
               />
               <Button className="hidden md:flex rounded-full">Search</Button>
             </form>
